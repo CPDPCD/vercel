@@ -1,12 +1,237 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CPD Presidente Dutra</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Login do Sistema</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* Desabilitar seleção de texto */
+        :root {
+            --primary-blue: #0a74da;
+            --primary-red: #d92027;
+            --dark-bg: #1a1a2e;
+            --light-bg: #16213e;
+            --text-color: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none; /* Impede a seleção de texto */
+            -webkit-user-select: none; /* Para navegadores WebKit */
+            -moz-user-select: none; /* Para Firefox */
+            -ms-user-select: none; /* Para Internet Explorer/Edge */
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(45deg, var(--primary-red), var(--primary-blue), #0f1a4d, #e0234a);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+            overflow: hidden; /* Esconde barras de rolagem */
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .login-container {
+            width: 400px;
+            background: rgba(22, 33, 62, 0.65);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        .login-container h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 600;
+            background: linear-gradient(90deg, var(--primary-red), var(--primary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-container p {
+            margin-bottom: 30px;
+            color: #ccc;
+        }
+
+        .input-group {
+            position: relative;
+            width: 100%;
+            margin-bottom: 25px;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ccc;
+            transition: color 0.3s;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px 15px 15px 50px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            outline: none;
+            color: var(--text-color);
+            font-size: 1em;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 15px rgba(10, 116, 218, 0.5);
+        }
+
+        .input-group input:focus ~ i {
+            color: var(--primary-blue);
+        }
+
+        #username-input {
+            cursor: not-allowed; /* Mostra que o campo está bloqueado */
+        }
+
+        #login-button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(90deg, var(--primary-red), var(--primary-blue));
+            color: #fff;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.3s;
+        }
+
+        #login-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        #login-button:active {
+            transform: translateY(-1px);
+        }
+        
+        #error-message {
+            color: #ff4757;
+            margin-top: 15px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.5s;
+            height: 20px;
+        }
+
+    </style>
 </head>
 <body>
-    <h1>CPD Presidente Dutra</h1>
+
+    <div class="login-container">
+        <h1>Acesso Restrito</h1>
+        <p>Insira suas credenciais para continuar</p>
+        
+        <form id="login-form">
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="username-input" value="cpdmateus" readonly>
+            </div>
+            
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password-input" placeholder="Senha" required>
+            </div>
+            
+            <button type="submit" id="login-button">Entrar</button>
+
+            <div id="error-message">Senha incorreta!</div>
+        </form>
+    </div>
+
+    <script>
+        // 1. Desabilitar o clique com o botão direito do mouse
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // 2. Desabilitar a cópia (Ctrl+C, etc.)
+        document.addEventListener('keydown', function(e) {
+            // Desabilita Ctrl+C, Ctrl+X, Ctrl+A
+            if (e.ctrlKey && ['c', 'x', 'a', 'u'].includes(e.key.toLowerCase())) {
+                e.preventDefault();
+            }
+            // Desabilita F12 (ferramentas de desenvolvedor)
+            if (e.key === 'F12') {
+                e.preventDefault();
+            }
+        });
+
+        // 3. Lógica do formulário de login
+        const form = document.getElementById('login-form');
+        const passwordInput = document.getElementById('password-input');
+        const errorMessage = document.getElementById('error-message');
+        const correctPassword = 'radeonrx580';
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Impede o envio real do formulário
+            
+            const enteredPassword = passwordInput.value;
+
+            if (enteredPassword === correctPassword) {
+                // Tenta sair do modo de tela cheia
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) { /* Firefox */
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) { /* IE/Edge */
+                    document.msExitFullscreen();
+                }
+            } else {
+                // Mostra mensagem de erro
+                errorMessage.style.opacity = '1';
+                // Adiciona uma vibração ao container
+                document.querySelector('.login-container').animate([
+                    { transform: 'translateX(0)' },
+                    { transform: 'translateX(-10px)' },
+                    { transform: 'translateX(10px)' },
+                    { transform: 'translateX(-10px)' },
+                    { transform: 'translateX(10px)' },
+                    { transform: 'translateX(0)' }
+                ], {
+                    duration: 300,
+                    easing: 'ease-in-out'
+                });
+                
+                // Limpa o campo de senha
+                passwordInput.value = '';
+
+                // Esconde a mensagem de erro após alguns segundos
+                setTimeout(() => {
+                    errorMessage.style.opacity = '0';
+                }, 3000);
+            }
+        });
+
+    </script>
+
 </body>
 </html>
